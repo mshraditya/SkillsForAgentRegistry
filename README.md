@@ -11,7 +11,7 @@ A distinctive, production-grade web platform for discovering and browsing AI age
 - **Responsive design** — Seamless experience on desktop and mobile
 - **Industrial-editorial aesthetic** — Terminal-inspired with Space Mono typography and electric cyan accents
 
-![Skills Registry Screenshot](screenshot.png)
+![Skills Registry Screenshot](Screenshot%202026-02-10%20at%202.10.41%20AM.png)
 
 ---
 
