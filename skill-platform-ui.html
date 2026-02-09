@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Registry — Agent Capabilities Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-surface: #1a1a1a;
+            --color-surface-elevated: #242424;
+            --color-text-primary: #fafafa;
+            --color-text-secondary: #a0a0a0;
+            --color-text-tertiary: #606060;
+            --color-accent: #00ffaa;
+            --color-border: #2a2a2a;
+            
+            --font-display: 'Space Mono', monospace;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            
+            --spacing-unit: 8px;
+            --radius: 2px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 calc(var(--spacing-unit) * 4);
+        }
+        
+        /* Header */
+        header {
+            padding: calc(var(--spacing-unit) * 8) 0 calc(var(--spacing-unit) * 4);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .header-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: calc(var(--spacing-unit) * 8);
+            align-items: end;
+        }
+        
+        .branding h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+            line-height: 1;
+        }
+        
+        .branding p {
+            font-size: 1.125rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            font-weight: 400;
+        }
+        
+        .meta {
+            text-align: right;
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+        }
+        
+        .meta-count {
+            font-size: 3rem;
+            color: var(--color-accent);
+            display: block;
+            line-height: 1;
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+        
+        /* Search Section */
+        .search-section {
+            padding: calc(var(--spacing-unit) * 12) 0 calc(var(--spacing-unit) * 8);
+            position: relative;
+        }
+        
+        .search-wrapper {
+            position: relative;
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .search-input {
+            width: 100%;
+            background: var(--color-surface);
+            border: 2px solid var(--color-border);
+            color: var(--color-text-primary);
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            padding: calc(var(--spacing-unit) * 4) calc(var(--spacing-unit) * 6);
+            border-radius: var(--radius);
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .search-input:focus {
+            border-color: var(--color-accent);
+            background: var(--color-surface-elevated);
+            box-shadow: 0 0 0 4px rgba(0, 255, 170, 0.1);
+        }
+        
+        .search-input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+        
+        .search-hint {
+            margin-top: calc(var(--spacing-unit) * 2);
+            font-size: 0.875rem;
+            color: var(--color-text-tertiary);
+            font-family: var(--font-display);
+        }
+        
+        .search-hint kbd {
+            background: var(--color-surface);
+            padding: 2px 8px;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+        
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: calc(var(--spacing-unit) * 2);
+            margin-bottom: calc(var(--spacing-unit) * 6);
+            overflow-x: auto;
+            padding-bottom: calc(var(--spacing-unit) * 1);
+        }
+        
+        .filter-tag {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 3);
+            border-radius: var(--radius);
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-tag:hover,
+        .filter-tag.active {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background: rgba(0, 255, 170, 0.05);
+        }
+        
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: calc(var(--spacing-unit) * 3);
+            padding-bottom: calc(var(--spacing-unit) * 12);
+        }
+        
+        .skill-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: calc(var(--spacing-unit) * 4);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--color-accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .skill-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-4px);
+        }
+        
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+        }
+        
+        .skill-name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: calc(var(--spacing-unit) * 1);
+        }
+        
+        .skill-category {
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .skill-download {
+            background: transparent;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .skill-download:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            background: rgba(0, 255, 170, 0.05);
+        }
+        
+        .skill-description {
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+        }
+        
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: calc(var(--spacing-unit) * 1);
+        }
+        
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-text-tertiary);
+            padding: 4px 10px;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-family: var(--font-display);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: calc(var(--spacing-unit) * 16) 0;
+            display: none;
+        }
+        
+        .empty-state.visible {
+            display: block;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: calc(var(--spacing-unit) * 3);
+            opacity: 0.3;
+        }
+        
+        .empty-state h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: calc(var(--spacing-unit) * 2);
+        }
+        
+        .empty-state p {
+            color: var(--color-text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                grid-template-columns: 1fr;
+                gap: calc(var(--spacing-unit) * 4);
+            }
+            
+            .meta {
+                text-align: left;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="branding">
+                    <h1>Skills Registry</h1>
+                    <p>Curated capabilities for autonomous agents. Search, evaluate, deploy.</p>
+                </div>
+                <div class="meta">
+                    <span class="meta-count">247</span>
+                    <div>indexed skills</div>
+                </div>
+            </div>
+        </header>
+        
+        <section class="search-section">
+            <div class="search-wrapper">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    placeholder="Search capabilities..."
+                    id="searchInput"
+                    autocomplete="off"
+                >
+                <div class="search-hint">
+                    <kbd>/</kbd> to focus · <kbd>↑</kbd><kbd>↓</kbd> to navigate · <kbd>enter</kbd> to download
+                </div>
+            </div>
+        </section>
+        
+        <div class="filters">
+            <button class="filter-tag active" data-category="all">All Skills</button>
+            <button class="filter-tag" data-category="frontend">Frontend</button>
+            <button class="filter-tag" data-category="backend">Backend</button>
+            <button class="filter-tag" data-category="ai">AI & Agents</button>
+            <button class="filter-tag" data-category="security">Security</button>
+            <button class="filter-tag" data-category="automation">Automation</button>
+            <button class="filter-tag" data-category="design">Design</button>
+            <button class="filter-tag" data-category="data">Data & Analytics</button>
+        </div>
+        
+        <div class="skills-grid" id="skillsGrid">
+            <!-- Skills will be populated by JavaScript -->
+        </div>
+        
+        <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">⌀</div>
+            <h3>No skills found</h3>
+            <p>Try adjusting your search or filters</p>
+        </div>
+    </div>
+    
+    <script>
+        // Sample skill data based on the workspace structure
+        const skills = [
+            {
+                name: 'frontend-design',
+                category: 'Frontend',
+                description: 'Create distinctive, production-grade frontend interfaces with intentional aesthetics, high craft, and non-generic visual identity.',
+                tags: ['UI', 'Design Systems', 'CSS'],
+                categorySlug: 'frontend'
+            },
+            {
+                name: 'autonomous-agents',
+                category: 'AI & Agents',
+                description: 'Build autonomous agent systems with advanced reasoning, planning, and execution capabilities.',
+                tags: ['AI', 'Agents', 'Planning'],
+                categorySlug: 'ai'
+            },
+            {
+                name: 'api-security-best-practices',
+                category: 'Security',
+                description: 'Implement comprehensive API security measures including authentication, rate limiting, and vulnerability prevention.',
+                tags: ['Security', 'API', 'Auth'],
+                categorySlug: 'security'
+            },
+            {
+                name: 'backend-architect',
+                category: 'Backend',
+                description: 'Design scalable backend architectures with proper separation of concerns and system resilience patterns.',
+                tags: ['Architecture', 'Backend', 'Scalability'],
+                categorySlug: 'backend'
+            },
+            {
+                name: 'react-performance',
+                category: 'Frontend',
+                description: 'Optimize React applications for maximum performance with memoization, lazy loading, and bundle optimization.',
+                tags: ['React', 'Performance', 'Optimization'],
+                categorySlug: 'frontend'
+            },
+            {
+                name: 'aws-serverless',
+                category: 'Backend',
+                description: 'Build serverless applications on AWS using Lambda, API Gateway, and event-driven architectures.',
+                tags: ['AWS', 'Serverless', 'Lambda'],
+                categorySlug: 'backend'
+            },
+            {
+                name: 'agent-orchestration-multi-agent-optimize',
+                category: 'AI & Agents',
+                description: 'Orchestrate multiple AI agents with coordination protocols and shared state management.',
+                tags: ['Multi-Agent', 'Orchestration', 'AI'],
+                categorySlug: 'ai'
+            },
+            {
+                name: 'penetration-testing',
+                category: 'Security',
+                description: 'Conduct comprehensive security assessments with systematic vulnerability discovery and exploitation.',
+                tags: ['Pentesting', 'Security', 'Ethical Hacking'],
+                categorySlug: 'security'
+            },
+            {
+                name: 'marketing-automation',
+                category: 'Automation',
+                description: 'Automate marketing workflows including email campaigns, social media, and lead nurturing.',
+                tags: ['Marketing', 'Automation', 'CRM'],
+                categorySlug: 'automation'
+            },
+            {
+                name: 'data-visualization',
+                category: 'Data & Analytics',
+                description: 'Create compelling data visualizations with D3.js, Chart.js, and custom SVG implementations.',
+                tags: ['Visualization', 'Data', 'Charts'],
+                categorySlug: 'data'
+            },
+            {
+                name: 'design-systems',
+                category: 'Design',
+                description: 'Build comprehensive design systems with component libraries, tokens, and documentation.',
+                tags: ['Design', 'Components', 'Tokens'],
+                categorySlug: 'design'
+            },
+            {
+                name: 'ci-cd-optimization',
+                category: 'Automation',
+                description: 'Optimize CI/CD pipelines for speed, reliability, and cost-effectiveness.',
+                tags: ['DevOps', 'CI/CD', 'Automation'],
+                categorySlug: 'automation'
+            }
+        ];
+        
+        const searchInput = document.getElementById('searchInput');
+        const skillsGrid = document.getElementById('skillsGrid');
+        const emptyState = document.getElementById('emptyState');
+        const filterTags = document.querySelectorAll('.filter-tag');
+        
+        let currentFilter = 'all';
+        
+        function renderSkills(skillsToRender) {
+            if (skillsToRender.length === 0) {
+                skillsGrid.style.display = 'none';
+                emptyState.classList.add('visible');
+                return;
+            }
+            
+            skillsGrid.style.display = 'grid';
+            emptyState.classList.remove('visible');
+            
+            skillsGrid.innerHTML = skillsToRender.map(skill => `
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div>
+                            <div class="skill-name">${skill.name}</div>
+                            <div class="skill-category">${skill.category}</div>
+                        </div>
+                        <button class="skill-download" aria-label="Download skill" title="Download skill">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="skill-description">${skill.description}</p>
+                    <div class="skill-tags">
+                        ${skill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add download handlers
+            document.querySelectorAll('.skill-download').forEach((btn, index) => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    downloadSkill(skillsToRender[index]);
+                });
+            });
+        }
+        
+        function filterSkills() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            let filtered = skills.filter(skill => {
+                const matchesSearch = skill.name.toLowerCase().includes(searchTerm) ||
+                                     skill.description.toLowerCase().includes(searchTerm) ||
+                                     skill.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+                
+                const matchesCategory = currentFilter === 'all' || skill.categorySlug === currentFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderSkills(filtered);
+        }
+        
+        function downloadSkill(skill) {
+            // Simulate download
+            console.log('Downloading skill:', skill.name);
+            alert(`Downloading skill: ${skill.name}\n\nIn production, this would download the SKILL.md file and dependencies.`);
+        }
+        
+        // Event listeners
+        searchInput.addEventListener('input', filterSkills);
+        
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                filterTags.forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.dataset.category;
+                filterSkills();
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+        
+        // Initial render
+        renderSkills(skills);
+    </script>
+</body>
+</html>
