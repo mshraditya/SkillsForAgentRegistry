@@ -1,3 +1,18 @@
+// Theme management
+const themeToggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+
+// Load saved theme or default to dark
+const savedTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', savedTheme);
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+});
+
 // Load skills data dynamically
 let skills = [];
 
@@ -114,8 +129,10 @@ filterTags.forEach(tag => {
 });
 
 // Modal functionality
+const howToBtn = document.getElementById('howToBtn');
 const aboutBtn = document.getElementById('aboutBtn');
 const thanksBtn = document.getElementById('thanksBtn');
+const howToModal = document.getElementById('howToModal');
 const aboutModal = document.getElementById('aboutModal');
 const thanksModal = document.getElementById('thanksModal');
 const modalCloses = document.querySelectorAll('.modal-close');
@@ -130,6 +147,7 @@ function closeModal(modal) {
     document.body.style.overflow = '';
 }
 
+howToBtn.addEventListener('click', () => openModal(howToModal));
 aboutBtn.addEventListener('click', () => openModal(aboutModal));
 thanksBtn.addEventListener('click', () => openModal(thanksModal));
 

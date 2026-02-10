@@ -15,6 +15,66 @@ A distinctive, production-grade web platform for discovering and browsing AI age
 
 ---
 
+## How to Use
+
+### Finding Skills
+
+1. **Browse All Skills** — Scroll through the complete registry of 700+ agent capabilities
+2. **Search by Keyword** — Type any term related to the capability you need (e.g., "API", "security", "testing")
+3. **Filter by Category** — Click category buttons to view only relevant skills:
+   - **Frontend** — UI/UX, React, design systems, component libraries
+   - **Backend** — APIs, databases, server architecture, microservices
+   - **AI & Agents** — LLMs, autonomous agents, multi-agent systems, orchestration
+   - **Security** — Penetration testing, vulnerability assessment, authentication
+   - **Automation** — CI/CD, workflow automation, deployment pipelines
+   - **DevOps** — Docker, Kubernetes, cloud infrastructure, monitoring
+   - **Data & Analytics** — Visualization, metrics, data pipelines
+   - **Testing** — TDD, integration testing, quality assurance
+   - **Mobile** — iOS, Android, React Native, Flutter
+   - **Marketing** — SEO, content, campaigns, analytics
+   - **Development** — General programming, tools, methodologies
+
+### Using Skills in Your Agent
+
+Once you find a skill:
+
+1. **Click the download icon** on the skill card to get the SKILL.md file
+2. **Read the frontmatter** to understand when to use the skill
+3. **Review the skill content** for operational patterns and guidelines
+4. **Integrate into your agent** by:
+   - Adding the skill to your agent's knowledge base
+   - Referencing it in your agent's system prompts
+   - Using it as context for specific tasks
+   - Implementing the patterns in your workflows
+
+### Example Use Cases
+
+**Building a Frontend Application**
+1. Search for "frontend" or filter by Frontend category
+2. Download `frontend-design` for UI/UX principles
+3. Download `react-patterns` for React best practices
+4. Download `tailwind-design-system` for styling approach
+
+**Setting Up Security Testing**
+1. Filter by Security category
+2. Download `penetration-testing` for methodology
+3. Download `api-security-best-practices` for API hardening
+4. Download `vulnerability-scanner` for automated scanning
+
+**Creating an Autonomous Agent**
+1. Search for "agent" or filter by AI & Agents
+2. Download `autonomous-agents` for core patterns
+3. Download `agent-orchestration-multi-agent-optimize` for coordination
+4. Download `agent-memory-systems` for persistent knowledge
+
+### Keyboard Shortcuts
+
+- **`/`** — Focus search input from anywhere
+- **`Esc`** — Close modal dialogs
+- **Click outside modal** — Alternative way to close
+
+---
+
 ## Tech Stack
 
 - **Language**: JavaScript (ES6+)

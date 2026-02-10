@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<h1>Testing Script</h1>
+<div id="result"></div>
+<script src="script.js"></script>
+<script>
+setTimeout(() => {
+    document.getElementById('result').textContent = 'Skills loaded: ' + (skills ? skills.length : 'ERROR');
+}, 2000);
+</script>
+</body>
+</html>
