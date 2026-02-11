@@ -305,6 +305,38 @@ header {
     transform: scaleX(1);
 }
 
+/* Ad cards */
+.ad-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-text-tertiary);
+    border-radius: var(--radius);
+    padding: calc(var(--spacing-unit) * 4);
+    transition: border-color 0.2s ease;
+    position: relative;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ad-label {
+    position: absolute;
+    top: calc(var(--spacing-unit) * 2);
+    right: calc(var(--spacing-unit) * 2);
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--color-text-tertiary);
+    opacity: 0.6;
+}
+
+.ad-card .adsbygoogle {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .skill-header {
     display: flex;
     justify-content: space-between;

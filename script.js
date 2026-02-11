@@ -52,27 +52,59 @@ function renderSkills(skillsToRender) {
     skillsGrid.style.display = 'grid';
     emptyState.classList.remove('visible');
     
-    skillsGrid.innerHTML = skillsToRender.map(skill => `
-        <div class="skill-card">
-            <div class="skill-header">
-                <div>
-                    <div class="skill-name">${skill.name}</div>
-                    <div class="skill-category">${skill.category}</div>
+    // Insert ads every 12-16 skills (randomize for natural feel)
+    const adInterval = Math.floor(Math.random() * 5) + 12; // 12-16
+    let htmlContent = [];
+    
+    skillsToRender.forEach((skill, index) => {
+        // Add skill card
+        htmlContent.push(`
+            <div class="skill-card">
+                <div class="skill-header">
+                    <div>
+                        <div class="skill-name">${skill.name}</div>
+                        <div class="skill-category">${skill.category}</div>
+                    </div>
+                    <button class="skill-download" aria-label="Download skill" title="Download skill">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                    </button>
                 </div>
-                <button class="skill-download" aria-label="Download skill" title="Download skill">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                </button>
+                <p class="skill-description">${skill.description}</p>
+                <div class="skill-tags">
+                    ${skill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
             </div>
-            <p class="skill-description">${skill.description}</p>
-            <div class="skill-tags">
-                ${skill.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-            </div>
-        </div>
-    `).join('');
+        `);
+        
+        // Insert ad after every adInterval skills
+        if ((index + 1) % adInterval === 0 && index < skillsToRender.length - 1) {
+            htmlContent.push(`
+                <div class="ad-card">
+                    <div class="ad-label">SPONSORED</div>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="+2f+ro+2j-7a+6n"
+                         data-ad-client="ca-pub-9984135399440070"
+                         data-ad-slot="9551730264"></ins>
+                </div>
+            `);
+        }
+    });
+    
+    skillsGrid.innerHTML = htmlContent.join('');
+    
+    // Push ads to Google
+    const adElements = document.querySelectorAll('.adsbygoogle');
+    adElements.forEach(ad => {
+        if (!ad.dataset.adsbygoogleStatus) {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+    });
     
     // Add download handlers
     document.querySelectorAll('.skill-download').forEach((btn, index) => {
