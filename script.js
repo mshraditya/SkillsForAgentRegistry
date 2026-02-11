@@ -163,8 +163,10 @@ filterTags.forEach(tag => {
 // Modal functionality
 const howToBtn = document.getElementById('howToBtn');
 const aboutBtn = document.getElementById('aboutBtn');
+const thanksBtn = document.getElementById('thanksBtn');
 const howToModal = document.getElementById('howToModal');
 const aboutModal = document.getElementById('aboutModal');
+const thanksModal = document.getElementById('thanksModal');
 const modalCloses = document.querySelectorAll('.modal-close');
 
 function openModal(modal) {
@@ -179,6 +181,7 @@ function closeModal(modal) {
 
 howToBtn.addEventListener('click', () => openModal(howToModal));
 aboutBtn.addEventListener('click', () => openModal(aboutModal));
+thanksBtn.addEventListener('click', () => openModal(thanksModal));
 
 modalCloses.forEach(closeBtn => {
     closeBtn.addEventListener('click', (e) => {

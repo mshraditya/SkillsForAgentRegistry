@@ -403,6 +403,34 @@ header {
     font-family: var(--font-display);
 }
 
+/* Thanks link styling */
+.thanks-link {
+    margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.thanks-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--spacing-unit) * 2);
+    color: var(--color-accent);
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
+}
+
+.thanks-link a:hover {
+    background: var(--color-accent);
+    color: var(--color-bg);
+}
+
+.thanks-link svg {
+    flex-shrink: 0;
+}
+
 /* Empty State */
 .empty-state {
     text-align: center;
